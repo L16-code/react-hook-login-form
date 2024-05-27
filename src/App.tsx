@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from './store';
+import { logout } from './store/authSlice';
+import LoginForm from './components/LoginForm';
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      {isAuthenticated ? (
+        <div className="container">
+          <h1>Welcome, {user}!</h1>
+          <button onClick={() => dispatch(logout())}>Logout</button>
+        </div>
+      ) : (
+        <LoginForm />
+      )}
     </div>
   );
-}
+};
 
 export default App;
